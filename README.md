@@ -11,5 +11,6 @@ Para crear las máquinas se ejecuta el comando **./clean_all.sh** dentro de la c
 
 ### Ejecutar Playbook
 En este comando se importan todos los playbooks y se ejecutan para la creación de todo el entorno Moodle
+
 **ansible-playbook -i ../hosts all.yml**
 
