@@ -1,7 +1,7 @@
 # AnsibleMoodle
 
 ### Crear Imágenes
-Para crear las imágenes se ejecuta el comando **./createImages.sh** dentro de la carpeta **ansible000** 
+Para crear las imágenes se ejecuta el comando **docker build -t server:16.04 .** dentro de la carpeta **ansible000** 
 
 ### Crear Máquinas
 Para crear las máquinas se ejecuta el comando **./create_dockers.sh** dentro de la carpeta **ansible002**
