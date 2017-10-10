@@ -1,0 +1,6 @@
+---
+  - name: Instalación de Redis
+    hosts: nosql
+    remote_user: root
+    roles:
+      - nosqlserver

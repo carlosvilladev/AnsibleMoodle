@@ -1,0 +1,8 @@
+---
+  - name: Instalación de mysql
+    hosts: sql
+    become: true
+    become_user: root
+    gather_facts: true
+    roles:
+      - sqlserver

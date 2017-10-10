@@ -1,0 +1,46 @@
+---
+- name: Specify MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password' value='12345' vtype='password'
+  become: true
+
+- name: Confirm MySQL root password before installing
+  debconf: name='mysql-server' question='mysql-server/root_password_again' value='12345' vtype='password'
+  become: true
+
+
+- name: Install MySQL DB server
+  become: true
+  apt:
+    name: mysql-server
+    state: installed
+
+# - name: Install php-mysql
+#   package: name=php-mysql state=present
+# - name: Install MySQLServer
+#   apt: name=mysql-server update_cache=yes state=present
+- name: Instalar PIP
+  apt: name=python-pip state=present
+- name: Instalar libmysqlclient-dev
+  apt: name=libmysqlclient-dev state=present
+- name: Instalar Python Mysql Module
+  pip: name=MySQL-python
+  notify:
+    - restart mysql
+# - name: Reload Apparmor
+#   command: /etc/init.d/apparmor reload
+- name: Create database user kardotjs
+  mysql_user:
+    login_user: root
+    login_password: 12345
+    name: kardotjs
+    password: 12345
+    priv: "*.*:ALL"
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock
+- name: Create database Moodle
+  mysql_db:
+    login_user: root
+    login_password: 12345
+    db: moodle
+    state: present
+    login_unix_socket: /var/run/mysqld/mysqld.sock

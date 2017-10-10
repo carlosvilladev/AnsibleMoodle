@@ -1,0 +1,4 @@
+---
+  - import_playbook: sql.yml
+  - import_playbook: nosql.yml
+  - import_playbook: webserver.yml

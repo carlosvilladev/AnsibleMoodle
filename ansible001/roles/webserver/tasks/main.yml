@@ -1,0 +1,82 @@
+---
+- name: Instalación de Apache
+  apt: name=apache2 update_cache=yes state=present
+- name: Instalar Apache2-php5
+  package: name=libapache2-mod-php state=present
+- name: Instalar PHP-CLI
+  package: name=php-cli state=present
+- name: Instalar PHP MCrypt
+  package: name=php-mcrypt state=present
+- name: Instalar php-gd
+  package: name=php-gd state=present
+- name: Instalar php-mysql
+  package: name=php-mysql state=present
+- name: Instalar php-intl
+  package: name=php-intl state=present
+- name: Instalar php-xmlrpc
+  package: name=php-xmlrpc state=present
+- name: Instalar php-fpm
+  package: name=php-fpm state=present
+- name: Instalar git
+  apt: name=git state=present
+
+#Configuración de Moodle
+# - name: Create user
+#   user: name=moodle
+
+- name: Create moodle directory
+  file: dest=/opt/moodle state=directory owner=root
+
+- name: Getting Moodle
+  git: repo=https://github.com/moodle/moodle.git version=MOODLE_30_STABLE dest=/opt/moodle accept_hostkey=yes
+
+# - name: Configure Moodle
+#   template: src=config.php.j2 dest=/opt/moodle/src/config.php"
+
+# - name: Create moodle docs directry
+#   file: dest=/opt/moodle/moodleDocs state=directory owner=moodle
+
+# - name: Set up cron
+#   cron: name="Moodle" job="/usr/bin/php /opt/moodle/admin/cli/cron.php >/dev/null"
+
+- name: Copiar repositorio local a /var/www/html
+  command: cp -R /opt/moodle /var/www/html/
+
+- name: Create moodle data directory
+  file: dest=/var/moodledata state=directory
+
+- name: Permissions
+  command: chown -R www-data /var/moodledata
+
+- name: Permissions
+  command: chown -R 777 /var/moodledata
+
+- name: Instalar python-pip
+  package: name=python-pip state=present
+
+# - name: Instalar docker-py
+#   pip: name=docker-py>=1.7.0 state=present
+#
+# - name: Create Volume in Docker
+#   docker_container:
+#     name: server01
+#     state: started
+#     volumes:
+#       - $HOME/Documents/UTB/ComputacionNube/Ansible/Ansible202/ansible002/data/moodle:/var/moodledata
+
+- name: Permissions
+  command: chown -R 0755 /var/www/html/moodle
+
+- name: Permissions
+  command: chmod -R 777 /var/www/html/moodle
+
+- name: Permissions
+  command: chmod -R 0755 /var/www/html/moodle
+# - name: Colocar permisos
+#   file: path=/var/moodledata
+
+### End Configuración de Moodle
+- name: enabled mod_rewrite
+  apache2_module: name=rewrite state=present
+  notify:
+    - restart apache2

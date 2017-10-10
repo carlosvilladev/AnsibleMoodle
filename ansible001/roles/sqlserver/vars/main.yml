@@ -1,0 +1,3 @@
+---
+# vars file for sqlserver
+mysql_root_pass: mypassword
